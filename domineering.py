@@ -6,74 +6,59 @@ class Board:
 
     def display(self):
         for i, field in enumerate(self.fields):
-            self.display_field(field)
+            self._display_field(field)
             if (i + 1) % game_size == 0:
-                print("")
+                print()
 
-    def display_field(self, field):
+    def _display_field(self, field):
         print(f"({field[0]:<{self.fields_len}}.{field[1]:{self.fields_len}})", end=" ")
 
-    def cover(self, fields_to_cover):
-        for i in range(0, 2):
-            index = self.fields.index(fields_to_cover[i])
+    def cover_fields(self, fields_to_cover):
+        for field in fields_to_cover:
+            index = self.fields.index(field)
             self.fields[index] = (0, 0)
+
+    def generate_possible_moves(self, move_type):
+        possible_moves = [
+            [field_one, (field_one[0] + move_type[0], field_one[1] + move_type[1])]
+            for field_one in self.fields
+            if (not (0 in field_one)) and (field_one[0] + move_type[0], field_one[1] + move_type[1]) in self.fields
+        ]
+        return possible_moves
 
 
 class Player:
 
     def __init__(self, name, move_type):
         self.name = name
-        self.score = []
         self.move_type = move_type
-        self.moves_possible = []
 
-    def generate_possible_moves(self, board):
-        self.moves_possible = []
-
-        for field_one in board.fields:
-            field_two = (field_one[0] + self.move_type[0], field_one[1] + self.move_type[1])
-            if (not (0 in field_one)) and field_two in board.fields:
-                self.moves_possible.append([field_one, field_two])
+    def provide_fields(self):
+        return [tuple(map(int, input(f"{self.name}, provide field {i + 1} to cover: ").split())) for i in range(2)]
 
 
 class Game:
 
-    def provide_moves(self, player):
-
-        fields_to_cover = []
-
-        for i in range(0, 2):
-            field = input(player.name + ", provide " + str(i+1) + " field to cover: ")
-            # adding the element
-            fields_to_cover.append(tuple([int(x) for x in field.split(" ")]))
-
-        print(fields_to_cover)
-        return fields_to_cover
-
     def turn(self, player, board):
-        fields_to_cover = self.provide_moves(player)
-        player.generate_possible_moves(board)
+        fields_to_cover = player.provide_fields()
+        if fields_to_cover in board.generate_possible_moves(player.move_type):
+            board.cover_fields(fields_to_cover)
 
-        if fields_to_cover in player.moves_possible:
-            board.cover(fields_to_cover)
+    def play(self, players, board):
+        while True:
+            for player in players:
+                if not board.generate_possible_moves(player.move_type):
+                    return player.name
+                board.display()
+                print()
+                self.turn(player, board)
+                print()
 
 
 game_size = 3
-
 board = Board(game_size)
-player_Y = Player("Y", (1, 0))
-player_Y.generate_possible_moves(board)
-
-player_Y = Player("X", (0, 1))
-player_Y.generate_possible_moves(board)
-
+players = [Player("Y", (1, 0)), Player("X", (0, 1))]
 game = Game()
+loser = game.play(players, board)
 
-while not (len(player_Y.moves_possible) == 0):
-    board.display()
-    print()
-    game.turn(player_Y, board)
-    print()
-    player_Y.generate_possible_moves(board)
-
-print("Game terminated!")
+print(f"Game terminated! Loser: {loser}")
