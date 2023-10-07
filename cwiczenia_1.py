@@ -8,7 +8,7 @@ class GameOfBones(TwoPlayerGame):
     def __init__(self, players=None):
         self.players = players
         self.pile = 20  # start with 20 bones in the pile
-        self.current_player = 2  # player 1 starts
+        self.current_player = 1  # player 1 starts
 
     def possible_moves(self):
         return ['1', '2', '3']
