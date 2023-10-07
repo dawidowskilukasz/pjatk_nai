@@ -24,6 +24,7 @@ class Board:
             for field_one in self.fields
             if (not (0 in field_one)) and (field_one[0] + move_type[0], field_one[1] + move_type[1]) in self.fields
         ]
+        print(possible_moves)
         return possible_moves
 
 
@@ -40,9 +41,23 @@ class Player:
 class Game:
 
     def turn(self, player, board):
-        fields_to_cover = player.provide_fields()
-        if fields_to_cover in board.generate_possible_moves(player.move_type):
-            board.cover_fields(fields_to_cover)
+        while True:
+            fields_to_cover = player.provide_fields()
+            if self.validate_move(fields_to_cover, board, player):
+                board.cover_fields(fields_to_cover)
+                break
+            else:
+                print("Bad move try again")
+
+    def validate_move(self, fields_to_cover, board, player):
+        move_type = player.move_type
+        for field in fields_to_cover:
+            if field not in board.fields:
+                return False
+            if (move_type == (1, 0) and field[1] != fields_to_cover[0][1]) or \
+                    (move_type == (0, 1) and field[0] != fields_to_cover[0][0]):
+                return False
+        return True
 
     def play(self, players, board):
         while True:
