@@ -1,5 +1,5 @@
 from easyAI import TwoPlayerGame, AI_Player, Human_Player, Negamax
-
+# import time
 
 class Domineering(TwoPlayerGame):
 
@@ -22,12 +22,12 @@ class Domineering(TwoPlayerGame):
     def possible_moves_opponent(self):
         return self._generate_possible_moves(self.opponent)
 
-    def _generate_possible_moves(self, player):
+    def _generate_possible_moves(self, ply):
         generated_possible_moves = [
-            [field, (field[0] + player.move_type[0], field[1] + player.move_type[1])]
+            [field, (field[0] + ply.move_type[0], field[1] + ply.move_type[1])]
             for field in self.board
             if (not (0 in field)) and (
-                field[0] + player.move_type[0], field[1] + player.move_type[1]) in self.board
+                field[0] + ply.move_type[0], field[1] + ply.move_type[1]) in self.board
         ]
         return generated_possible_moves
 
@@ -36,6 +36,12 @@ class Domineering(TwoPlayerGame):
             index = self.board.index(field)
             self.board[index] = (0, 0)
         self.player.score -= len(self.possible_moves_opponent())
+
+    def unmake_move(self, move):
+        self.player.score += len(self.possible_moves_opponent())
+        for field in move:
+            index = (field[0] - 1) * self.board_size + (field[1] - 1)
+            self.board[index] = field
 
     def show(self):
         for i, field in enumerate(self.board):
@@ -53,10 +59,13 @@ class Domineering(TwoPlayerGame):
         return self.player.score - self.opponent.score
 
     def is_over(self):
-        return not self.possible_moves()
+        return self.lose()
 
 
-ai = Negamax(6)
-game = Domineering([AI_Player(ai), AI_Player(ai)], 3)
+ai = Negamax(5)
+game = Domineering([AI_Player(ai), AI_Player(ai)], 6)
+# start = time.time()
 game.play()
 print("player %d loses" % game.current_player)
+# end = time.time()
+# print(end - start)
