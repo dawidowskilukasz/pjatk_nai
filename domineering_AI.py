@@ -2,13 +2,16 @@ from easyAI import TwoPlayerGame, AI_Player, Human_Player, Negamax
 import time
 
 
-# Here are basic rules on how to play the game: https://www.byrdseed.com/domineering/; https://en.wikipedia.org/wiki/Domineering
-# By: Maciej Zagórski(s23575), Łukasz Dawidowski(s22621)
+'''
+Here are basic rules on how to play the game: https://www.byrdseed.com/domineering/; https://en.wikipedia.org/wiki/Domineering
+By: Maciej Zagórski(s23575), Łukasz Dawidowski(s22621)
+'''
 class Domineering(TwoPlayerGame):
 
     def __init__(self, players, board_size):
         '''
         Initialize Domineering game
+
         Args:
             players (list): List of two players.
             board_size (int): Size of the board players will play on.
@@ -64,7 +67,7 @@ class Domineering(TwoPlayerGame):
         Makes move on the board, AI uses it to decide which move from possible moves is the best.
 
         Args:
-            move (list): Move to make, where move looks like this (field1, field2)
+            move (set): Move to make, where move looks like this (field1, field2)
         '''
         self.board.difference_update(move)
         self.player.score -= len(self.possible_moves_opponent())
@@ -75,7 +78,7 @@ class Domineering(TwoPlayerGame):
         check other possible moves.
 
         Args:
-             move (list): Move to undo, where move looks like this (field1, field2).
+             move (set): Move to undo, where move looks like this (field1, field2).
         '''
         self.player.score += len(self.possible_moves_opponent())
         self.board.update(move)
@@ -125,7 +128,6 @@ class Domineering(TwoPlayerGame):
 
         Returns:
             bool: True if game is finished, False if game is still ongoing
-
         '''
         return self.lose()
 
