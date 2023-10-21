@@ -148,8 +148,8 @@ class Domineering(TwoPlayerGame):
         return self.lose()
 
 
-ai = Negamax(15)
-# game = Domineering([AI_Player(ai), AI_Player(ai)], 5)
-game = Domineering([Human_Player(), AI_Player(ai)], 5)
+ai = Negamax(5)
+game = Domineering([AI_Player(ai), AI_Player(ai)], 5)
+# game = Domineering([Human_Player(), AI_Player(ai)], 5)
 game.play()
 print("player %d loses" % game.current_player)
