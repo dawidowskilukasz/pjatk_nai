@@ -7,14 +7,12 @@ LEVELS = ['low', 'medium', 'high']
 
 traffic_during_day = ctrl.Antecedent(np.arange(0, 24, 0.5), 'traffic_during_day')
 cars_queuing = ctrl.Antecedent(np.arange(0, 15, 1), 'cars_queuing')
-speed_of_arriving = ctrl.Antecedent(np.arange(1, 100, 1), 'speed_of_arriving')
+road_visibility = ctrl.Antecedent(np.arange(1, 100, 1), 'road_visibility')
 emergency = ctrl.Antecedent(np.arange(0, 1.1, 0.1), 'emergency')
 
 light_duration = ctrl.Consequent(np.arange(0, 10.5, 0.5), 'light_duration')
 
-speed_of_arriving['low'] = fuzz.gaussmf(speed_of_arriving.universe, 0, 15)
-speed_of_arriving['medium'] = fuzz.gaussmf(speed_of_arriving.universe, 50, 15)
-speed_of_arriving['high'] = fuzz.gaussmf(speed_of_arriving.universe, 100, 15)
+road_visibility.automf(3, names=LEVELS)
 
 cars_queuing.automf(3, names=LEVELS)
 
@@ -43,29 +41,40 @@ emergency['is'] = y
 
 light_duration.automf(3, names=LEVELS)
 
-speed_of_arriving.view()
 cars_queuing.view()
+road_visibility.view()
 traffic_during_day.view()
 emergency.view()
 light_duration.view()
 
-# 1. If there IS an *emergency*, then the *light_duration* will be LOW.
-# 2. If the *traffic_during_day* is HIGH AND the number of *cars_queuing* is *HIGH*,
-#    then the *light_duration* will be HIGH.
-# 3. If the *speed_of_arriving* is HIGH, the *light_duration* will be LOW.
+rule1 = ctrl.Rule(emergency['is'], light_duration['low'])
+rule2 = ctrl.Rule(emergency['is_not'] & cars_queuing['high'], light_duration['high'])
+rule3 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'], light_duration['high'])
+rule4 = ctrl.Rule(traffic_during_day['low'] | cars_queuing['low'], light_duration['low'])
+rule5 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'], light_duration['low'])
+rule6 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'], light_duration['medium'])
+rule7 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['low'], light_duration['medium'])
+rule8 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['high'], light_duration['medium'])
+rule9 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & road_visibility['high'], light_duration['high'])
+rule10 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'] & road_visibility['low'], light_duration['low'])
+rule11 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'] & road_visibility['medium'],
+                   light_duration['medium'])
+rule12 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & road_visibility['low'], light_duration['medium'])
+rule13 = ctrl.Rule(road_visibility['low'], light_duration['low'])
+rule14 = ctrl.Rule(road_visibility['medium'], light_duration['medium'])
+rule15 = ctrl.Rule(road_visibility['high'], light_duration['high'])
+rule16 = ctrl.Rule(road_visibility['medium'] & cars_queuing['high'], light_duration['medium'])
 
-rule1 = ctrl.Rule(emergency['is_not'], light_duration['low'])
-rule2 = ctrl.Rule(traffic_during_day['high'] | cars_queuing['high'], light_duration['high'])
-rule3 = ctrl.Rule(speed_of_arriving['high'], light_duration['low'])
+traffic_lights_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11,
+                                          rule12, rule13, rule14, rule15, rule16])
 
-traffic_lights_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
 
 traffic_lights = ctrl.ControlSystemSimulation(traffic_lights_ctrl)
 
 traffic_lights.input['emergency'] = 0
-traffic_lights.input['traffic_during_day'] = 12
-traffic_lights.input['cars_queuing'] = 8
-traffic_lights.input['speed_of_arriving'] = 50
+traffic_lights.input['traffic_during_day'] = 18
+traffic_lights.input['cars_queuing'] = 15
+traffic_lights.input['road_visibility'] = 10
 
 traffic_lights.compute()
 
