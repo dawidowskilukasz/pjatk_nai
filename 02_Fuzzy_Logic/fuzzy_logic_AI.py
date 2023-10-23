@@ -1,3 +1,21 @@
+'''
+This is a model of traffic light control system which uses fuzzy logic.
+
+This model shows how would traffic lights work based on few input variables like traffic density based on time of day,
+car queuing at the intersection, air transparency or in other words road visibility (rain, fog etc.) and the presence
+of an emergency situation
+
+In the code we can find variables, membership functions, rules to define fuzzy logic which allow it to simulate the
+control system of traffic lights to determine optimal green light duration
+
+Authors:
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
+
+Usage:
+- Modify the input values for 'emergency,' 'traffic_during_day,' 'cars_queuing,' and 'air_transparency.'
+- Run the code to compute the optimal 'light_duration.'
+- Visualize the results using the plotted membership functions.
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 import skfuzzy as fuzz
@@ -7,14 +25,12 @@ LEVELS = ['low', 'medium', 'high']
 
 traffic_during_day = ctrl.Antecedent(np.arange(0, 24, 0.5), 'traffic_during_day')
 cars_queuing = ctrl.Antecedent(np.arange(0, 15, 1), 'cars_queuing')
-speed_of_arriving = ctrl.Antecedent(np.arange(1, 100, 1), 'speed_of_arriving')
+air_transparency = ctrl.Antecedent(np.arange(1, 100, 1), 'air_transparency')
 emergency = ctrl.Antecedent(np.arange(0, 1.1, 0.1), 'emergency')
 
 light_duration = ctrl.Consequent(np.arange(0, 10.5, 0.5), 'light_duration')
 
-speed_of_arriving['low'] = fuzz.gaussmf(speed_of_arriving.universe, 0, 15)
-speed_of_arriving['medium'] = fuzz.gaussmf(speed_of_arriving.universe, 50, 15)
-speed_of_arriving['high'] = fuzz.gaussmf(speed_of_arriving.universe, 100, 15)
+air_transparency.automf(3, names=LEVELS)
 
 cars_queuing.automf(3, names=LEVELS)
 
@@ -43,29 +59,39 @@ emergency['is'] = y
 
 light_duration.automf(3, names=LEVELS)
 
-speed_of_arriving.view()
 cars_queuing.view()
+air_transparency.view()
 traffic_during_day.view()
 emergency.view()
 light_duration.view()
 
-# 1. If there IS an *emergency*, then the *light_duration* will be LOW.
-# 2. If the *traffic_during_day* is HIGH AND the number of *cars_queuing* is *HIGH*,
-#    then the *light_duration* will be HIGH.
-# 3. If the *speed_of_arriving* is HIGH, the *light_duration* will be LOW.
-
 rule1 = ctrl.Rule(emergency['is_not'], light_duration['low'])
-rule2 = ctrl.Rule(traffic_during_day['high'] | cars_queuing['high'], light_duration['high'])
-rule3 = ctrl.Rule(speed_of_arriving['high'], light_duration['low'])
+rule2 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'], light_duration['high'])
+rule3 = ctrl.Rule(traffic_during_day['low'] | cars_queuing['low'], light_duration['low'])
+rule4 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'], light_duration['low'])
+rule5 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'], light_duration['medium'])
+rule6 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['low'], light_duration['medium'])
+rule7 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['high'], light_duration['medium'])
+rule8 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['high'], light_duration['high'])
+rule9 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'] & air_transparency['low'], light_duration['low'])
+rule10 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'] & air_transparency['medium'],
+                   light_duration['medium'])
+rule11 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['low'],
+                   light_duration['medium'])
+rule12 = ctrl.Rule(air_transparency['low'], light_duration['low'])
+rule13 = ctrl.Rule(air_transparency['medium'], light_duration['medium'])
+rule14 = ctrl.Rule(air_transparency['high'], light_duration['high'])
+rule15 = ctrl.Rule(air_transparency['medium'] & cars_queuing['high'], light_duration['medium'])
 
-traffic_lights_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
+traffic_lights_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11,
+                                          rule12, rule13, rule14, rule15])
 
 traffic_lights = ctrl.ControlSystemSimulation(traffic_lights_ctrl)
 
-traffic_lights.input['emergency'] = 0
-traffic_lights.input['traffic_during_day'] = 12
-traffic_lights.input['cars_queuing'] = 8
-traffic_lights.input['speed_of_arriving'] = 50
+traffic_lights.input['emergency'] = 1
+traffic_lights.input['traffic_during_day'] = 15
+traffic_lights.input['cars_queuing'] = 7
+traffic_lights.input['air_transparency'] = 15
 
 traffic_lights.compute()
 
