@@ -1,3 +1,21 @@
+'''
+This is a model of traffic light control system which uses fuzzy logic.
+
+This model shows how would traffic lights work based on few input variables like traffic density based on time of day,
+car queuing at the intersection, air transparency or in other words road visibility (rain, fog etc.) and the presence
+of an emergency situation
+
+In the code we can find variables, membership functions, rules to define fuzzy logic which allow it to simulate the
+control system of traffic lights to determine optimal green light duration
+
+Authors:
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
+
+Usage:
+- Modify the input values for 'emergency,' 'traffic_during_day,' 'cars_queuing,' and 'air_transparency.'
+- Run the code to compute the optimal 'light_duration.'
+- Visualize the results using the plotted membership functions.
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 import skfuzzy as fuzz
@@ -51,14 +69,15 @@ rule1 = ctrl.Rule(emergency['is_not'], light_duration['low'])
 rule2 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'], light_duration['high'])
 rule3 = ctrl.Rule(traffic_during_day['low'] | cars_queuing['low'], light_duration['low'])
 rule4 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'], light_duration['low'])
-rule5= ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'], light_duration['medium'])
+rule5 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'], light_duration['medium'])
 rule6 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['low'], light_duration['medium'])
 rule7 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['high'], light_duration['medium'])
 rule8 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['high'], light_duration['high'])
 rule9 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'] & air_transparency['low'], light_duration['low'])
 rule10 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'] & air_transparency['medium'],
                    light_duration['medium'])
-rule11 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['low'], light_duration['medium'])
+rule11 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['low'],
+                   light_duration['medium'])
 rule12 = ctrl.Rule(air_transparency['low'], light_duration['low'])
 rule13 = ctrl.Rule(air_transparency['medium'], light_duration['medium'])
 rule14 = ctrl.Rule(air_transparency['high'], light_duration['high'])
