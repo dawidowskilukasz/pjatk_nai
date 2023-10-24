@@ -1,5 +1,4 @@
 import matplotlib.animation as animation
-import matplotlib.pyplot as plt
 import RoadJunction as rj
 import TrafficLightControlSystem as tlcs
 
@@ -95,7 +94,3 @@ class Animation:
     def __update_air_transparency(self):
         self.parameters.change_air_transparency()
         self.plot.fig.patch.set_alpha((100 - self.parameters.air_transparency) / 100)
-
-
-a = Animation()
-plt.show()
