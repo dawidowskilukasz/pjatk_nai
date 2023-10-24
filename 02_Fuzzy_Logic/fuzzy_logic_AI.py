@@ -65,30 +65,26 @@ traffic_during_day.view()
 emergency.view()
 light_duration.view()
 
-rule1 = ctrl.Rule(emergency['is_not'], light_duration['low'])
-rule2 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'], light_duration['high'])
-rule3 = ctrl.Rule(traffic_during_day['low'] | cars_queuing['low'], light_duration['low'])
-rule4 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'], light_duration['low'])
-rule5 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'], light_duration['medium'])
-rule6 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['low'], light_duration['medium'])
-rule7 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['high'], light_duration['medium'])
-rule8 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['high'], light_duration['high'])
-rule9 = ctrl.Rule(traffic_during_day['low'] & cars_queuing['low'] & air_transparency['low'], light_duration['low'])
-rule10 = ctrl.Rule(traffic_during_day['medium'] & cars_queuing['medium'] & air_transparency['medium'],
-                   light_duration['medium'])
-rule11 = ctrl.Rule(traffic_during_day['high'] & cars_queuing['high'] & air_transparency['low'],
-                   light_duration['medium'])
-rule12 = ctrl.Rule(air_transparency['low'], light_duration['low'])
-rule13 = ctrl.Rule(air_transparency['medium'], light_duration['medium'])
-rule14 = ctrl.Rule(air_transparency['high'], light_duration['high'])
-rule15 = ctrl.Rule(air_transparency['medium'] & cars_queuing['high'], light_duration['medium'])
+rule_1 = ctrl.Rule((traffic_during_day['high'] & cars_queuing['high']) |
+                   (air_transparency['high'])
+                   , light_duration['high'])
+rule_2 = ctrl.Rule((traffic_during_day['medium'] & cars_queuing['medium']) |
+                   (traffic_during_day['high'] & cars_queuing['low']) |
+                   (traffic_during_day['low'] & cars_queuing['high']) |
+                   # (air_transparency['medium']) |
+                   (air_transparency['medium'] & cars_queuing['high']) |
+                   (traffic_during_day['high'] & cars_queuing['high'] &
+                    air_transparency['low'])
+                   , light_duration['medium'])
+rule_3 = ctrl.Rule((traffic_during_day['low'] & cars_queuing['low']) |
+                   (air_transparency['low'])
+                   , light_duration['low'])
 
-traffic_lights_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11,
-                                          rule12, rule13, rule14, rule15])
+traffic_lights_ctrl = ctrl.ControlSystem([rule_1, rule_2, rule_3])
 
 traffic_lights = ctrl.ControlSystemSimulation(traffic_lights_ctrl)
 
-traffic_lights.input['emergency'] = 1
+# traffic_lights.input['emergency'] = 1
 traffic_lights.input['traffic_during_day'] = 15
 traffic_lights.input['cars_queuing'] = 7
 traffic_lights.input['air_transparency'] = 15
