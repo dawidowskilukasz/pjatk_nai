@@ -16,15 +16,24 @@ LIGHT_RANGE = np.array([0, 22])
 
 
 def create_automf(ent):
+    """
+    Create an AutoMF (Automated Membership Function) for a fuzzy entity.
+    """
     return ent.automf(3, names=LEVELS)
 
 
 def combine_trapmf(ent, *value_sets):
+    """
+    Combine trapezoidal membership functions for a fuzzy entity.
+    """
     levels = [fuzz.trapmf(ent.universe, values) for values in value_sets]
     return [max(*values) for values in zip(*levels)]
 
 
 class TrafficLightControlSystemSetup:
+    """
+    Class for setting up the fuzzy logic control system for traffic light control.
+    """
     def __init__(self):
         self.traffic_during_day = ctrl.Antecedent(np.arange(TIME_RANGE[0], TIME_RANGE[-1], 0.5), 'traffic_during_day')
         self.cars_queuing = ctrl.Antecedent(np.arange(CARS_RANGE[0], CARS_RANGE[-1], 1), 'cars_queuing')
@@ -56,6 +65,9 @@ class TrafficLightControlSystemSetup:
         self.light_duration.automf(7, names=LIGHT_LEVELS)
 
     def assess_time(self, value):
+        """
+        Assess the time of day and determine its level of traffic.
+        """
         time_assessment = [fuzz.interp_membership(self.traffic_during_day.universe,
                                                   self.traffic_during_day['high'].mf,
                                                   value),
@@ -69,11 +81,17 @@ class TrafficLightControlSystemSetup:
 
 
 class TrafficLightControlSystemRules:
+    """
+    Class for defining the fuzzy control rules for traffic light control.
+    """
     def __init__(self):
         self.setup = TrafficLightControlSystemSetup()
         self.rules = self._create_rules()
 
     def _create_rules(self):
+        """
+        Define the fuzzy control rules for traffic light control.
+        """
         rule_1 = ctrl.Rule((self.setup.traffic_during_day['low'] &
                             self.setup.cars_queuing['low'] &
                             self.setup.air_transparency['low']) |
@@ -180,6 +198,9 @@ class TrafficLightControlSystemRules:
 
 
 class TrafficLightControlSystem:
+    """
+    Class for implementing the traffic light control system using fuzzy logic.
+    """
     def __init__(self):
         self.setup = TrafficLightControlSystemSetup()
         self.rules = TrafficLightControlSystemRules().rules
@@ -187,6 +208,18 @@ class TrafficLightControlSystem:
         self.simulation = ctrl.ControlSystemSimulation(self.control)
 
     def perform_simulation(self, time_of_day, cars_queuing, air_transparency, emergency=0.):
+        """
+        Perform a traffic light simulation based on input parameters.
+
+        Args:
+            time_of_day (float): The time of day.
+            cars_queuing (int): Number of cars queuing.
+            air_transparency (int): Air transparency level.
+            emergency (float, optional): Emergency condition (default is 0).
+
+        Returns:
+            float: The computed light duration.
+        """
         self.simulation.input['traffic_during_day'] = time_of_day
         self.simulation.input['cars_queuing'] = cars_queuing
         self.simulation.input['air_transparency'] = air_transparency
@@ -197,6 +230,9 @@ class TrafficLightControlSystem:
         return self.simulation.output['light_duration']
 
     def show_views(self):
+        """
+        Show visualizations of the fuzzy control system's input and output variables.
+        """
         self.setup.traffic_during_day.view()
         self.setup.cars_queuing.view()
         self.setup.air_transparency.view()
@@ -206,6 +242,9 @@ class TrafficLightControlSystem:
 
 
 class RandomParameters:
+    """
+    Class for generating random parameters for the traffic simulation.
+    """
 
     def __init__(self):
         self.time_of_day = random.randint(TIME_RANGE.min(), TIME_RANGE.max() * 2) / 2
@@ -215,10 +254,19 @@ class RandomParameters:
         self.emergency = round(random.random(), 1)
 
     def get_random_parameters(self):
+        """
+        Get the current set of random parameters.
+        """
         return [self.time_of_day, self.air_transparency, self.cars_queuing_x, self.cars_queuing_y, self.emergency]
 
     def change_air_transparency(self):
+        """
+        Change the air transparency level to a random value.
+        """
         self.air_transparency = random.randint(0, 100)
 
     def change_emergency(self):
+        """
+        Change the emergency condition to a random value.
+        """
         self.emergency = round(random.random(), 1)
