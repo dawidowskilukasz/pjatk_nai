@@ -10,7 +10,7 @@ ROAD_LINES_STYLE = (0, (5, 10))
 
 def update_lines(line_obj, x_data, y_data):
     """
-    Update the data of a Line2D object.
+    Update the data of the road (of the flow of cars on the road).
     """
     line_obj.set_xdata(x_data)
     line_obj.set_ydata(y_data)
@@ -18,7 +18,7 @@ def update_lines(line_obj, x_data, y_data):
 
 def update_scatters(scatter_obj, color):
     """
-    Update the color of a scatter plot.
+    Update the color of the light.
     """
     scatter_obj.set_color(color)
     scatter_obj.set_edgecolor('black')
@@ -26,11 +26,7 @@ def update_scatters(scatter_obj, color):
 
 class RoadJunction:
     """
-    Class for creating and managing a road junction visualization.
-
-    Attributes:
-        fig (matplotlib.figure.Figure): The figure for the road junction.
-        ax (matplotlib.axes.Axes): The axes for the road junction.
+    Class for creating and managing the road junction visualization.
     """
     def __init__(self):
         self.fig, self.ax = plt.subplots(figsize=(10, 5), facecolor='grey')
@@ -49,7 +45,7 @@ class RoadJunction:
 
     def set_axis_and_figures(self, x_lims, y_lims):
         """
-        Set the axis limits and figure properties for the road junction.
+        Set the axis limits and figure properties for the road junction visualization.
         """
         self.fig.patch.set_alpha(0)
 
@@ -60,7 +56,7 @@ class RoadJunction:
 
     def draw_lines(self, x=None, y=None, color='dimgrey', linestyle='solid'):
         """
-        Draw lines on the road junction.
+        Draw lines, i.e. roads (flows of cars on the roads), on the road junction visualization.
         """
         x_values = [x] * 9 if x else list(range(1, 10))
         y_values = [y] * 9 if y else list(range(1, 10))
@@ -69,13 +65,13 @@ class RoadJunction:
 
     def draw_scatters(self, x, y):
         """
-        Draw scatter points on the road junction.
+        Draw scatter, i.e. a light on the road junction visualization.
         """
         return self.ax.scatter(x, y, c='white', edgecolor='black', marker='o', s=500, zorder=4)
 
     def draw_road_lines(self):
         """
-        Draw road lines on the road junction.
+        Draw road lines on the road junction visualization.
         """
         for i in ROAD_LINES_POSITIONS:
             self.draw_lines(y=i, color='lightgrey', linestyle=ROAD_LINES_STYLE)
@@ -83,7 +79,7 @@ class RoadJunction:
 
     def set_legend(self):
         """
-        Set the legend for the road junction.
+        Set the legend for the road junction visualization.
         """
         return plt.legend(
             [mpatches.Patch(visible=False) for _ in range(3)] +
@@ -94,13 +90,13 @@ class RoadJunction:
 
     def update_legend_text(self, i, to_update):
         """
-        Update the text of a legend label.
+        Update the text of the specified legend label.
         """
         self.legend.get_texts()[i].set_text(LEGEND_LABELS[i] + str(to_update))
 
     def switch_lights(self, switch_to_x):
         """
-        Switch the traffic lights on the road junction.
+        Switch the traffic lights on the road junction visualization.
         """
         if switch_to_x:
             update_scatters(self.x_scat, 'lime')

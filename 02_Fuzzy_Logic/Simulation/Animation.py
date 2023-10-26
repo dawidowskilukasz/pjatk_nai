@@ -9,18 +9,7 @@ EMERGENCY_THRESHOLD = 0.8
 
 class Animator:
     """
-    Animator class for controlling the animation of a traffic simulation.
-
-    Attributes:
-        animation (animation.FuncAnimation): The animation object.
-        paused (bool): A flag to indicate if the animation is paused.
-
-    Methods:
-        _toggle_pause: Toggles between pausing and resuming the animation.
-
-    Args:
-        figure (matplotlib.figure.Figure): The figure to animate.
-        function (callable): The update function for the animation.
+    Animator class for controlling the animation of the road junction and the real-life traffic simulation.
     """
     def __init__(self, figure, function):
         self.animation = animation.FuncAnimation(figure, function, interval=75, cache_frame_data=False)
@@ -29,7 +18,7 @@ class Animator:
 
     def _toggle_pause(self, *args, **kwargs):
         """
-        Toggle the animation between paused and resumed states.
+        Toggle the animation between paused and resumed states based on the mouse-click.
         """
         if self.paused:
             self.animation.resume()
@@ -40,17 +29,7 @@ class Animator:
 
 class Animation:
     """
-    Animation class for simulating and visualizing traffic at a road junction.
-
-    Attributes:
-        marker (int): A marker for tracking simulation progress.
-        tlcs (TrafficLightControlSystem): The traffic light control system.
-        parameters (tlcs.RandomParameters): Parameters for the simulation.
-        increase_cars_rate (int): Rate at which cars are added to the simulation.
-
-    Methods:
-        _initialize_plot: Initialize the plot for the simulation.
-        _update: Update the animation frame.
+    Animation class for simulating and visualizing traffic at the road junction (the real-life traffic simulation).
     """
     def __init__(self):
         self.marker = 0
@@ -67,7 +46,7 @@ class Animation:
 
     def _initialize_plot(self):
         """
-        Initialize the plot for the traffic simulation.
+        Initialize the plot for the traffic simulation (the road junction) based on the generated random parameters.
         """
         self.plot.fig.patch.set_alpha((100 - self.parameters.air_transparency) / 100)
 
@@ -100,7 +79,8 @@ class Animation:
 
     def __initialize_simulation(self):
         """
-        Initialize the simulation, including pausing the animation, switching lights, and updating the marker.
+        Initialize the simulation, including pausing the animation, switching lights, and updating the marker, i.e. the
+        frame of the next lights switch.
         """
         self.animator.animation.pause()
         self.plot.switch_lights(self.switch_x_y)
@@ -133,7 +113,8 @@ class Animation:
 
     def __update_marker_and_switch(self):
         """
-        Update the marker, switch between X and Y directions, and adjust emergency conditions.
+        Update the marker and switch lights (i.e. switch) between X and Y directions (the roads, i.e. the flows of cars
+        on the roads).
         """
         new_linewidth = self.plot.x_plot[0].get_linewidth() if self.switch_x_y else self.plot.y_plot[0].get_linewidth()
 
@@ -151,20 +132,20 @@ class Animation:
 
     def __adjust_car_number(self, plot, change):
         """
-        Adjust the number of cars in the given plot.
+        Adjust the linewidth, i.e. the number of the cars on the given road.
         """
         new_width = plot.get_linewidth() + change
         plot.set_linewidth(max(new_width, 0))
 
     def __update_air_transparency(self):
         """
-        Update the air transparency parameter and adjust the figure's alpha.
+        Update the air transparency parameter and, based on it, adjust the figure's alpha.
         """
         self.parameters.change_air_transparency()
         self.plot.fig.patch.set_alpha((100 - self.parameters.air_transparency) / 100)
 
     def __update_emergency(self):
         """
-        Update the emergency conditions.
+        Update the emergency parameter.
         """
         self.parameters.change_emergency()
