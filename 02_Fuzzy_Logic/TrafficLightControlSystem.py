@@ -273,3 +273,9 @@ class RandomParameters:
         Change the emergency level (0.9 or 1 means that there is an emergency) to a random value.
         """
         self.emergency = round(random.random(), 1)
+
+
+# tlcs = TrafficLightControlSystem()
+# print(tlcs.perform_simulation(10, 30, 60))
+# print(tlcs.perform_simulation(10, 30, 60, 1))
+# print(tlcs.perform_simulation(5, 15, 90))

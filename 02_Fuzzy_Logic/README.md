@@ -31,3 +31,4 @@ junction and the traffic fimulation)
   real-life traffic simulation (click on the junction to run the animation).
 
 ![Sample traffic simulation (console and plots screenshot)](screenshot_traffic.png)
+![Sample fuzzy logic application (console screenshot)](screenshot_fuzzy_logic.png)
