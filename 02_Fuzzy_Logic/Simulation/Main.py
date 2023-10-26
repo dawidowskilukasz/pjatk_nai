@@ -24,16 +24,19 @@ https://matplotlib.org/stable/ , https://github.com/matplotlib (matplotlib docum
 https://github.com/woo-chia-wei/traffic-fuzzy-control/tree/master (example of applying the fuzzy logic to the road
 junction and the traffic fimulation)
 
+Sources:
+https://scikit-fuzzy.github.io/scikit-fuzzy/ , https://github.com/scikit-fuzzy (scikit-fuzzy documentation)
+https://matplotlib.org/stable/ , https://github.com/matplotlib (matplotlib documentation)
+_Application of fuzzy logic to control traffic signals_ (https://pubs.aip.org/aip/acp/article-pdf/doi/10.1063/1.5112230/14186507/020045_1_online.pdf)
+https://github.com/woo-chia-wei/traffic-fuzzy-control/tree/master (example of applying the fuzzy logic to the road
+junction and the traffic fimulation)
+
 Usage:
 - Modify the input values for 'emergency', 'traffic_during_day', 'cars_queuing', and 'air_transparency' in the Animation
   class (the ranges of the mentioned parameters may be modified in the TrafficLightControlSystem).
 - Run the code to compute the optimal 'light_duration'.
 - Visualize the results using the plotted membership functions as well as the visualisation of the road junction and the
   real-life traffic simulation (click on the junction to run the animation).
-
-Sources:
-
-
 """
 
 from Animation import Animation
