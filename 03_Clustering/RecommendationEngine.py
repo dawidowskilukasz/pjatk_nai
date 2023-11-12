@@ -97,7 +97,7 @@ def recommend_movies(user_ratings, target_user, num_recommendations=5):
 
 if __name__ == "__main__":
     file_path = 'film_data.json'
-    target_user = "Łukasz Dawidowski"
+    target_user = "Maciej Zagórski"
     user_ratings = load_user_ratings(file_path)
     recommendations, avoidances = recommend_movies(user_ratings, target_user)
 
