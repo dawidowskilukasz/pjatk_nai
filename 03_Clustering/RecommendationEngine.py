@@ -1,13 +1,39 @@
 import numpy as np
 import json
 
+"""
+Movie Recommendation Engine
+
+Installation:
+Assuming that you have pip installed, type this in a terminal: sudo pip install numpy
+
+Overview:
+Basic movie recommendation engine showing 5 movies to recommend and 5 to avoid based on data given in .json file for 
+selected user
+
+Authors:
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45).
+
+Usage:
+Define target user u want to recommend movies (the user must be defined in .json file in order for code to work properly
+and must have defined some movie ratings)
+Default is 5 movies to recommend and five to avoid you can change it by changing "num_recommendations" parameter in 
+"recommend_movies" function 
+"""
+
 
 def load_user_ratings(file_path):
+    """
+       Load user ratings from a JSON file.
+    """
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
 
 
 def create_ratings_matrix(user_ratings, movies):
+    """
+        Create a ratings matrix from user ratings.
+    """
     num_users = len(user_ratings)
     num_movies = len(movies)
 
@@ -22,11 +48,25 @@ def create_ratings_matrix(user_ratings, movies):
 
 
 def calculate_correlation(ratings_matrix, target_user_ratings):
+    """
+        Calculate correlation scores between the target user and other users.
+    """
     correlation_scores = np.corrcoef(ratings_matrix, target_user_ratings)
     return correlation_scores[-1, :-1]
 
 
 def recommend_movies(user_ratings, target_user, num_recommendations=5):
+    """
+        Recommend movies for a target user based on collaborative filtering.
+
+        Args:
+            user_ratings (dict): A dictionary representing user ratings.
+            target_user (str): The target user for whom recommendations are made.
+            num_recommendations (int): Number of movies to recommend.
+
+        Returns:
+            tuple: A tuple containing lists of recommended movies and movies to avoid.
+    """
     users = list(user_ratings.keys())
     movies = list(set(movie for ratings in user_ratings.values() for movie in ratings.keys()))
 
@@ -39,9 +79,9 @@ def recommend_movies(user_ratings, target_user, num_recommendations=5):
 
     target_user_unwatched_movies = [movie for movie in movies if movie not in user_ratings[target_user]]
 
-    predicted_ratings = np.dot(ratings_matrix[similar_users[:15]].T,
-                               correlation_with_target[similar_users[:15]]) / np.sum(
-        np.abs(correlation_with_target[similar_users[:15]]))
+    predicted_ratings = np.dot(ratings_matrix[similar_users[:5]].T,
+                               correlation_with_target[similar_users[:5]]) / np.sum(
+        np.abs(correlation_with_target[similar_users[:5]]))
 
     recommended_movies = [movie for movie in target_user_unwatched_movies if
                           predicted_ratings[movies.index(movie)] > np.mean(predicted_ratings)]
