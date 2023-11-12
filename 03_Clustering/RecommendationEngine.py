@@ -4,6 +4,7 @@ import json
 with open('film_data.json', 'r', encoding='utf-8') as file:
     user_ratings = json.load(file)
 
+
 def recommend_movies(user_ratings, target_user, num_recommendations=5):
     users = list(user_ratings.keys())
     movies = list(set(movie for ratings in user_ratings.values() for movie in ratings.keys()))
@@ -26,15 +27,21 @@ def recommend_movies(user_ratings, target_user, num_recommendations=5):
 
     target_user_unwatched_movies = [movie for movie in movies if movie not in user_ratings[target_user]]
 
-    predicted_ratings = np.dot(ratings_matrix[similar_users[:5]].T, correlation_with_target[similar_users[:5]]) / np.sum(np.abs(correlation_with_target[similar_users[:5]]))
+    predicted_ratings = np.dot(ratings_matrix[similar_users[:5]].T,
+                               correlation_with_target[similar_users[:5]]) / np.sum(
+        np.abs(correlation_with_target[similar_users[:5]]))
 
-    recommended_movies = [movie for movie in target_user_unwatched_movies if predicted_ratings[movies.index(movie)] > np.mean(predicted_ratings)]
-    recommended_movies = sorted(recommended_movies, key=lambda x: predicted_ratings[movies.index(x)], reverse=True)[:num_recommendations]
+    recommended_movies = [movie for movie in target_user_unwatched_movies if
+                          predicted_ratings[movies.index(movie)] > np.mean(predicted_ratings)]
+    recommended_movies = sorted(recommended_movies, key=lambda x: predicted_ratings[movies.index(x)], reverse=True)[
+                         :num_recommendations]
 
-    avoid_movies = [movie for movie in target_user_unwatched_movies if predicted_ratings[movies.index(movie)] < np.mean(predicted_ratings)]
+    avoid_movies = [movie for movie in target_user_unwatched_movies if
+                    predicted_ratings[movies.index(movie)] < np.mean(predicted_ratings)]
     avoid_movies = sorted(avoid_movies, key=lambda x: predicted_ratings[movies.index(x)])[:num_recommendations]
 
     return recommended_movies, avoid_movies
+
 
 target_user = "Paweł Czapiewski"
 recommendations, avoidances = recommend_movies(user_ratings, target_user)
