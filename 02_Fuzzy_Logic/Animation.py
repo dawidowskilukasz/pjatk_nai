@@ -11,6 +11,7 @@ class Animator:
     """
     Animator class for controlling the animation of the road junction and the real-life traffic simulation.
     """
+
     def __init__(self, figure, function):
         self.animation = animation.FuncAnimation(figure, function, interval=75, cache_frame_data=False)
         self.paused = True
@@ -31,6 +32,7 @@ class Animation:
     """
     Animation class for simulating and visualizing traffic at the road junction (the real-life traffic simulation).
     """
+
     def __init__(self):
         self.marker = 0
         self.tlcs = tlcs.TrafficLightControlSystem()
@@ -116,13 +118,14 @@ class Animation:
         Update the marker and switch lights (i.e. switch) between X and Y directions (the roads, i.e. the flows of cars
         on the roads).
         """
-        new_linewidth = self.plot.x_plot[0].get_linewidth() if self.switch_x_y else self.plot.y_plot[0].get_linewidth()
+        new_linewidth = self.plot.y_plot[0].get_linewidth() if self.switch_x_y else self.plot.x_plot[0].get_linewidth()
 
-        self.marker += round(self.tlcs.perform_simulation(self.parameters.time_of_day,
-                                                          new_linewidth,
-                                                          self.parameters.air_transparency,
-                                                          self.parameters.emergency)
-                             * 10, 0)
+        outcome = self.tlcs.perform_simulation(self.parameters.time_of_day,
+                                               new_linewidth,
+                                               self.parameters.air_transparency,
+                                               self.parameters.emergency)
+        print(outcome)
+        self.marker += round(outcome * 10, 0)
 
         self.switch_x_y = not self.switch_x_y
         self.plot.switch_lights(self.switch_x_y)
