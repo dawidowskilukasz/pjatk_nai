@@ -7,20 +7,14 @@ from sklearn.svm import SVC
 
 
 # https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database/
-# Unbalanced dataset (0: 500, 1: 268)
-
 # https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
-# Unbalanced dataset
-
-# Weights to apply
-
 
 class Dataset:
     def __init__(self, name, data, ordinal=False):
         self.name = name
         self.X, self.y = self.read_data(data, ordinal)
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y,
-                                                                                test_size=0.33,
+                                                                                test_size=0.25,
                                                                                 random_state=0,
                                                                                 stratify=self.y)
 
@@ -53,24 +47,17 @@ class Results:
 
 
 if __name__ == "__main__":
-    tree = DecisionTreeClassifier(criterion='gini', max_depth=4, random_state=1)
-    svm = SVC(random_state=1)
+    tree = DecisionTreeClassifier(max_depth=4, random_state=1, class_weight="balanced")
+    svm = SVC(random_state=1, class_weight="balanced")
 
     diabetes = Dataset("Pima Indians Diabetes", 'pima_indians_diabetes.csv')
     credit_card_fraud = Dataset("Credit Card Fraud", 'credit_card_fraud.csv', True)
 
-    print("* * * ", diabetes.name, "* * *\n")
+    classifiers = {"Decision Tree": tree, "SVM": svm}
+    datasets = [diabetes, credit_card_fraud]
 
-    tree_application = Results("Decision Tree", tree, diabetes)
-    print(tree_application)
-
-    svm_application = Results("SVM", svm, diabetes)
-    print(svm_application)
-
-    print("* * * ", credit_card_fraud.name, "* * *\n")
-
-    tree_application = Results("Decision Tree", tree, credit_card_fraud)
-    print(tree_application)
-
-    svm_application = Results("SVM", svm, credit_card_fraud)
-    print(svm_application)
+    for ds in datasets:
+        print("* * * ", ds.name, "* * *\n")
+        for key in classifiers:
+            results = Results(key, classifiers[key], ds)
+            print(results)
