@@ -1,13 +1,9 @@
 import pandas as pd
-
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
-
-
-# https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database/
-# https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
 
 class Dataset:
     def __init__(self, name, data, ordinal=False):
@@ -42,9 +38,27 @@ class Results:
 
         return score, conf_matrix
 
+    def get_confusion_metrics(self):
+        tn, fp, fn, tp = self.conf_matrix.ravel()
+        return tn, fp, fn, tp
+
+    def plot_confusion_metrics_bar_chart(self, dataset_name):
+        metrics = self.get_confusion_metrics()
+        total_samples = sum(metrics)
+        percentages = [f'{v / total_samples * 100:.2f}%' for v in metrics]
+        labels = ['True Negatives', 'False Positives', 'False Negatives', 'True Positives']
+        plt.bar(labels, metrics, color=['blue', 'red', 'orange', 'green'])
+
+        # Add numbers and percentages above the bars
+        for i, (v, percent) in enumerate(zip(metrics, percentages)):
+            plt.text(i, v + 0.05, f'{v}\n({percent})', ha='center', va='bottom')
+
+        plt.title(f'Confusion Metrics - {self.name} on {dataset_name}')
+        plt.xlabel('Metrics')
+        plt.ylabel('Count')
+
     def __str__(self):
         return f"{self.name}:\nScore: {self.score}\nConfusion matrix:\n{self.conf_matrix}\n"
-
 
 if __name__ == "__main__":
     tree = DecisionTreeClassifier(max_depth=4, random_state=1, class_weight="balanced")
@@ -61,3 +75,6 @@ if __name__ == "__main__":
         for key in classifiers:
             results = Results(key, classifiers[key], ds)
             print(results)
+            results.plot_confusion_metrics_bar_chart(ds.name)
+
+    plt.show()
