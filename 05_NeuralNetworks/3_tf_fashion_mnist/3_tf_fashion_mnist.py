@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.metrics import accuracy_score
 
-SAMPLES_PATH = "./2_fashion_mnist_samples/"
+SAMPLES_PATH = "3_fashion_mnist_samples/"
 MODEL_NAME = "3_fashion_mnist_model.keras"
 
 fashion_mnist = tf.keras.datasets.fashion_mnist

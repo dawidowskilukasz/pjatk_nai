@@ -9,7 +9,7 @@ RESULT_SVM = round(0.9841467436985966, 5)
 MODEL_NAME = "1_credit_card_fraud.keras"
 
 # https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
-credit_card_data = pd.read_csv('2_creditcard_dataset.csv')
+credit_card_data = pd.read_csv('1_creditcard_dataset.csv')
 credit_card_data.drop([credit_card_data.columns[0]], axis=1, inplace=True)
 
 y = np.array(credit_card_data['Class'])
