@@ -1,3 +1,14 @@
+"""
+Fashion MNIST Image Classification using TensorFlow Neural Networks
+
+This script performs image classification on the Fashion MNIST dataset using two neural network models implemented in
+TensorFlow.
+
+Ensure the '3_fashion_mnist_samples/' directory exists for saving image samples, and the model files
+'3_fashion_mnist_model_1.keras' and '3_fashion_mnist_model_2.keras' are present for model loading. The Fashion MNIST
+dataset is expected to be available through the TensorFlow dataset module.
+"""
+
 import random
 import matplotlib.pyplot as plt
 import os
@@ -11,10 +22,16 @@ MODEL_NAME_2 = "3_fashion_mnist_model_2.keras"
 
 class_names = ['t-shirt/top', 'trouser', 'pullover', 'dress', 'coat', 'sandal', 'shirt', 'sneaker', 'bag', 'ankle boot']
 
+"""
+Loading the dataset
+"""
 fashion_mnist = tf.keras.datasets.fashion_mnist
 (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
 X_train, X_test = X_train / 255.0, X_test / 255.0
 
+"""
+Generate some sample data
+"""
 samples_train = random.sample(range(0, 60000), 5)
 samples_test = random.sample(range(0, 10000), 5)
 
@@ -34,6 +51,9 @@ def generate_samples(samples, X, y):
 generate_samples(samples_train, X_train, y_train)
 generate_samples(samples_test, X_test, y_test)
 
+"""
+Creating and/or loading neural network model 1 (3 layers)
+"""
 try:
     model_1 = tf.keras.models.load_model(MODEL_NAME_1)
 except:
@@ -55,12 +75,19 @@ if not model_1:
     model_1.fit(X_train, y_train, epochs=n_epochs)
     model_1.save(MODEL_NAME_1)
 
+"""
+Creating predictions for model 1 (3 layers)
+"""
 train_accuracy_model_1 = model_1.evaluate(X_train, y_train)[1]
 test_accuracy_model_1 = model_1.evaluate(X_test, y_test)[1]
 
 print(f"Train Classification Accuracy (Model 1: 3 Layers): {train_accuracy_model_1:.4f}")
 print(f"Test Classification Accuracy (Model 1: 3 Layers): {test_accuracy_model_1:.4f}")
 
+
+"""
+Creating and/or loading neural network model 2 (1 layers)
+"""
 try:
     model_2 = tf.keras.models.load_model(MODEL_NAME_2)
 except:
@@ -80,6 +107,10 @@ if not model_2:
     model_2.fit(X_train, y_train, epochs=n_epochs)
     model_2.save(MODEL_NAME_2)
 
+
+"""
+Creating predictions for model 2 (1 layer)
+"""
 train_accuracy_model_2 = model_2.evaluate(X_train, y_train)[1]
 test_accuracy_model_2 = model_2.evaluate(X_test, y_test)[1]
 
@@ -88,6 +119,9 @@ print(f"Test Classification Accuracy (Model 2: 1 Layer): {test_accuracy_model_2:
 
 
 def generate_predictions(models, samples):
+    """
+        Function to generate predictions on user-specified image samples for both models
+    """
     print("\n* * * Validation of the Neural Network on Samples * * *\n")
     for s in samples:
         image_path = SAMPLES_PATH + s
