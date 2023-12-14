@@ -1,3 +1,12 @@
+"""
+CIFAR-10 Image Classification using TensorFlow Neural Network
+
+This script performs image classification on the CIFAR-10 dataset using a neural network implemented in TensorFlow.
+
+Ensure the '2_cifar_10_samples/' directory exists for saving image samples, and the 'cifar-10_test_model.keras'
+file is present for model loading. The CIFAR-10 dataset is expected to be available through the TensorFlow
+dataset module.
+"""
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -10,6 +19,9 @@ MODEL_NAME = "cifar-10_test_model.keras"
 
 class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
+"""
+Loading the dataset 
+"""
 cifar10 = tf.keras.datasets.cifar10
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
 X_train, X_test = X_train / 255.0, X_test / 255.0
@@ -17,6 +29,9 @@ X_train, X_test = X_train / 255.0, X_test / 255.0
 X_train, X_test = X_train.reshape((len(X_train), 32, 32, 3)), X_test.reshape((len(X_test), 32, 32, 3))
 y_train, y_test = y_train.flatten(), y_test.flatten()
 
+"""
+Generate some sample data
+"""
 samples_train = random.sample(range(0, 50000), 5)
 samples_test = random.sample(range(0, 10000), 5)
 
@@ -36,6 +51,9 @@ def generate_samples(samples, X, y):
 generate_samples(samples_train, X_train, y_train)
 generate_samples(samples_test, X_test, y_test)
 
+"""
+Creating and/or loading neural network model
+"""
 try:
     model = tf.keras.models.load_model(MODEL_NAME)
 except:
@@ -61,6 +79,9 @@ if not model:
     model.fit(X_train, y_train, epochs=n_epochs)
     model.save(MODEL_NAME)
 
+"""
+Creating predictions
+"""
 y_train_pred = np.argmax(model.predict(X_train), axis=-1)
 y_test_pred = np.argmax(model.predict(X_test), axis=-1)
 
@@ -70,6 +91,10 @@ test_accuracy = accuracy_score(y_test, y_test_pred)
 print(f"Train Classification Accuracy: {train_accuracy:.4f}")
 print(f"Test Classification Accuracy: {test_accuracy:.4f}")
 
+
+"""
+Generate and save the heatmap confusion matrix for test set
+"""
 conf_matrix_test = confusion_matrix(y_test, y_test_pred)
 plt.figure(figsize=(8, 6))
 plt.imshow(conf_matrix_test, interpolation='nearest', cmap='Blues')
@@ -85,10 +110,13 @@ plt.xticks(tick_marks, class_names, rotation=45)
 plt.yticks(tick_marks, class_names)
 plt.xlabel('Predicted')
 plt.ylabel('True')
-plt.savefig('3_tf_cifar-10_conf_matrix.png')
+plt.savefig('2_tf_cifar-10_conf_matrix.png')
 
 
 def generate_predictions(model, samples):
+    """
+    Function to generate predictions on user-specified image samples
+    """
     print("\n* * * Validation of the Neural Network on Samples * * *\n")
     for s in samples:
         image_path = SAMPLES_PATH + s
