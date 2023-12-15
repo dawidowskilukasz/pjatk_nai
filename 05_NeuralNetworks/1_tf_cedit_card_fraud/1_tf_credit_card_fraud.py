@@ -1,10 +1,15 @@
 """
-Credit Card Fraud Detection using TensorFlow Neural Network
+Credit Card Fraud Detection using TensorFlow Neural Network Model
 
-This script trains a neural network model to detect credit card fraud using the TensorFlow framework.
-The dataset used is from Kaggle (https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud).
+This script trains a neural network [“NN”] model to detect credit card fraud using the TensorFlow framework. The
+results of applying the NN model were compared with the results of classification made using decision tree and support
+vector machines (SVM) algorithms (classifiers). The decision tree classifier provided the most accurate result.
 
-Ensure the '1_creditcard_dataset.csv' file is in the same directory as the script for successful execution.
+The Credit Card Fraud dataset source: https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+
+Ensure that the '1_creditcard_dataset.csv' file is in the same directory as the script for successful execution.
+
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
 """
 import numpy as np
 import pandas as pd
@@ -17,7 +22,7 @@ RESULT_SVM = round(0.9841467436985966, 5)
 MODEL_NAME = "1_credit_card_fraud.keras"
 
 """
-Loading the dataset
+Loading and processing the dataset
 """
 credit_card_data = pd.read_csv('1_creditcard_dataset.csv')
 credit_card_data.drop([credit_card_data.columns[0]], axis=1, inplace=True)

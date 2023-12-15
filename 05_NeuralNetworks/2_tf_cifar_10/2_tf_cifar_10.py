@@ -1,11 +1,18 @@
 """
-CIFAR-10 Image Classification using TensorFlow Neural Network
+CIFAR-10 Image Classification using TensorFlow Neural Network Model
 
-This script performs image classification on the CIFAR-10 dataset using a neural network implemented in TensorFlow.
+This script performs image (of animals and vehicles) classification on the CIFAR-10 dataset using a neural network
+[“NN”] model implemented in TensorFlow. The results of applying the created NN model were also presented in the form of
+confusion matrix (heatmap).
 
-Ensure the '2_cifar_10_samples/' directory exists for saving image samples, and the 'cifar-10_test_model.keras'
-file is present for model loading. The CIFAR-10 dataset is expected to be available through the TensorFlow
-dataset module.
+The CIFAR-10 dataset source: https://www.cs.toronto.edu/~kriz/cifar.html ,
+https://www.tensorflow.org/datasets/catalog/cifar10
+
+Ensure that the '2_cifar_10_samples/' directory exists for saving image samples, and the '2_cifar-10_test_model.keras'
+file is present for model loading. If not, the image samples and the model would be created by the program. The CIFAR-10
+dataset is expected to be available through the TensorFlow dataset module.
+
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
 """
 import numpy as np
 import tensorflow as tf
@@ -15,7 +22,7 @@ import random
 import os
 
 SAMPLES_PATH = "2_cifar_10_samples/"
-MODEL_NAME = "cifar-10_test_model.keras"
+MODEL_NAME = "2_cifar-10_test_model.keras"
 
 class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
@@ -90,7 +97,6 @@ test_accuracy = accuracy_score(y_test, y_test_pred)
 
 print(f"Train Classification Accuracy: {train_accuracy:.4f}")
 print(f"Test Classification Accuracy: {test_accuracy:.4f}")
-
 
 """
 Generate and save the heatmap confusion matrix for test set

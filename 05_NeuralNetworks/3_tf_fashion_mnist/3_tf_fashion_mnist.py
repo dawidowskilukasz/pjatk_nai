@@ -1,12 +1,20 @@
 """
-Fashion MNIST Image Classification using TensorFlow Neural Networks
+Fashion MNIST Image Classification using TensorFlow Neural Network Models
 
-This script performs image classification on the Fashion MNIST dataset using two neural network models implemented in
-TensorFlow.
+This script performs image (of cloths) classification on the Fashion MNIST dataset using two neural network models
+[“NN”] implemented in TensorFlow. Two different models of NN were created: the “deeper” model, with three hidden layers
+(with 128 neurons each) and the “wider” one, with one hidden layer (with 384 neurons). The wider model, with only one
+layer, was slightly more accurate than the deeper one.
+
+The Fashion MNIST dataset source: https://github.com/zalandoresearch/fashion-mnist ,
+https://www.tensorflow.org/datasets/catalog/fashion_mnist
 
 Ensure the '3_fashion_mnist_samples/' directory exists for saving image samples, and the model files
-'3_fashion_mnist_model_1.keras' and '3_fashion_mnist_model_2.keras' are present for model loading. The Fashion MNIST
-dataset is expected to be available through the TensorFlow dataset module.
+'3_fashion_mnist_model_1.keras' and '3_fashion_mnist_model_2.keras' are present for model loading. If not, the image
+samples and the models would be created by the program. The Fashion MNIST dataset is expected to be available through
+the TensorFlow dataset module.
+
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
 """
 
 import random
@@ -15,7 +23,6 @@ import os
 import numpy as np
 import tensorflow as tf
 
-# https://github.com/zalandoresearch/fashion-mnist
 SAMPLES_PATH = "3_fashion_mnist_samples/"
 MODEL_NAME_1 = "3_fashion_mnist_model_1.keras"
 MODEL_NAME_2 = "3_fashion_mnist_model_2.keras"

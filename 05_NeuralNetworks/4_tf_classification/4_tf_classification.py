@@ -1,3 +1,22 @@
+"""
+Comparison of Binary Numbers using TensorFlow Neural Network Models
+
+The script trains a neural network [“NN”] model to compare numbers presented in binary notation using the TensorFlow
+framework. It was prepared more as an exercise, to check whether it is possible to teach NN model a specific function,
+in this case: comparing two numbers (the NN model acting as a comparator). The numbers to compare (two inputs) are
+provided to the model in the binary notation, the form of a list of 0s and 1s. In order to teach the model, a self-made
+dataset of all pairs of numbers from 0 to 1024 (2^10), presented in binary notation, were prepared. Then, the model was
+applied to compare the random numbers from 1,000,000,000,000 to 1,267,650,600,228,229,401,496,703,205,376 (2^100). Thus,
+the training dataset contains numbers from 0 to 1024 (2^10) with complimentary 0s (to match the size of a 2^100 number).
+
+Dataset used: self-made dataset of all pairs of numbers from 0 to 1024, presented in binary notation.
+
+Ensure that the '4_binary_table.csv' file is in the same directory as the script for successful execution. If not, the
+dataset would be created by the program.
+
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45)
+"""
+
 import pandas as pd
 import tensorflow as tf
 import numpy as np
@@ -14,6 +33,9 @@ class_names = ['X>Y', 'X=Y', 'X<Y']
 
 
 def generate_data():
+    """
+        Function to generate dataset and save it to a CSV file
+    """
     rows_A = []
     rows_B = []
     results = []
@@ -39,6 +61,9 @@ def generate_data():
     return df
 
 
+"""
+Generating and/or loading dataset
+"""
 try:
     data = pd.read_csv(DATA_FILE)
 except:
@@ -46,10 +71,16 @@ except:
 if data is None:
     data = generate_data()
 
+"""
+Processing the dataset
+"""
 X_A = np.array(data.loc[:, data.columns.str.startswith('A')])
 X_B = np.array(data.loc[:, data.columns.str.startswith('B')])
 y = np.array(data[class_names])
 
+"""
+Creating and/or loading neural network model
+"""
 try:
     model = tf.keras.models.load_model(MODEL_NAME)
 except:
@@ -82,11 +113,17 @@ if not model:
     model.fit([X_A, X_B], y, epochs=n_epochs, batch_size=b_size)
     model.save(MODEL_NAME)
 
-
+"""
+Assessing accuracy of model
+"""
 accuracy = model.evaluate([X_A, X_B], y)[1]
 print(f"Classification Accuracy: {accuracy:.4f}")
 
+
 def generate_predictions(model, samples):
+    """
+        Function to generate predictions on randomly generated numbers
+    """
     print("\n* * * Validation of the Neural Network on Samples * * *\n")
     for _ in range(samples):
         a = random.randint(1000000000000, 2 ** DATA_SIZE)
