@@ -54,7 +54,7 @@ By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-1
 
 #### Datasets:
 
-The following datasets were used:
+The following datasets were used:  
 https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud (Credit Card Fraud dataset)  
 https://www.cs.toronto.edu/~kriz/cifar.html , https://www.tensorflow.org/datasets/catalog/cifar10 (CIFAR-10 dataset)  
 https://github.com/zalandoresearch/fashion-mnist , https://www.tensorflow.org/datasets/catalog/fashion_mnist (Fashion
@@ -71,8 +71,12 @@ https://pandas.pydata.org/docs/ (pandas documentation)
 
 #### Screens:
 
-![Results of Credit Card Fraud neural network model](1_tf_cedit_card_fraud/1_tf_credit_card_fraud_results.png)
-![Results of CIFAR-10 network model](2_tf_cifar_10/2_tf_cifar_10_results.png)
-![Confusion matrix (heatmap) of CIFAR-10 network model](2_tf_cifar_10/2_tf_cifar-10_conf_matrix.png)
-![Results of Fashion MNIST network model](3_tf_fashion_mnist/3_tf_fashion_mnist_results.png)
-![Results of self-made dataset network model](4_tf_classification/4_tf_classification_results.png)
+Credit Card Fraud Detection using TensorFlow Neural Network Model  
+![Results of Credit Card Fraud neural network model](1_tf_cedit_card_fraud/1_tf_credit_card_fraud_results.png)  
+CIFAR-10 Image Classification using TensorFlow Neural Network Model  
+![Results of CIFAR-10 network model](2_tf_cifar_10/2_tf_cifar_10_results.png)  
+![Confusion matrix (heatmap) of CIFAR-10 network model](2_tf_cifar_10/2_tf_cifar-10_conf_matrix.png)  
+Fashion MNIST Image Classification using TensorFlow Neural Network Models  
+![Results of Fashion MNIST network model](3_tf_fashion_mnist/3_tf_fashion_mnist_results.png)  
+Comparison of Binary Numbers using TensorFlow Neural Network Models  
+![Results of self-made dataset network model](4_tf_classification/4_tf_classification_results.png)  
