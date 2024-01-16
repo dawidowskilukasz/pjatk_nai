@@ -9,14 +9,14 @@ def get_finger_coordinate(finger, image_shape):
     return image_shape - (finger * image_shape)
 
 
-def compare_coordinates(finger_1, finger_2, image_shape):
+def subtract_coordinates(finger_1, finger_2, image_shape):
     return get_finger_coordinate(finger_1, image_shape) - get_finger_coordinate(finger_2, image_shape)
 
 
 def compare_group_of_coordinates(coordinates_array, image_shape):
     comparison_result = True
     for i in range(0, len(coordinates_array), 2):
-        if compare_coordinates(coordinates_array[i], coordinates_array[i + 1], image_shape) > 0:
+        if subtract_coordinates(coordinates_array[i], coordinates_array[i + 1], image_shape) > 0:
             comparison_result = False
             break
     return comparison_result
@@ -64,10 +64,12 @@ with mp_hands.Hands(
 
                 middle_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
                 middle_finger_dip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_DIP]
+                middle_finger_pip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_PIP]
                 middle_finger_MCP = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
 
                 ring_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
                 ring_finger_dip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_DIP]
+                ring_finger_pip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_PIP]
                 ring_finger_MCP = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP]
 
                 pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
@@ -80,7 +82,7 @@ with mp_hands.Hands(
 
                 next_frame = time.time_ns()
 
-                if abs(compare_coordinates(index_finger_MCP.x, pinky_MCP.x, image.shape[1])) < 80:
+                if abs(subtract_coordinates(index_finger_MCP.x, pinky_MCP.x, image.shape[1])) < 40:
 
                     if compare_group_of_coordinates([index_finger_tip.x, index_finger_dip.x,
                                                      middle_finger_tip.x, middle_finger_dip.x,
@@ -99,47 +101,46 @@ with mp_hands.Hands(
                             pyautogui.scroll(100)
 
                     else:
+                        if first_frame_for_tab:
+                            prev_coordinate_tab = get_finger_coordinate(thumb_tip.y, image.shape[0])
+                            first_frame_for_tab = False
+
+                        next_coordinate_tab = get_finger_coordinate(thumb_tip.y, image.shape[0])
+                        if next_frame - prev_frame > 250000000:
+                            if next_coordinate_tab - prev_coordinate_tab > 20:
+                                pyautogui.hotkey('ctrl', 'tab')
+                            prev_coordinate_tab = next_coordinate_tab
+                            prev_frame = next_frame
+
+                else:
+
+                    if subtract_coordinates(index_finger_dip.y, thumb_tip.y, image.shape[0]) > 0:
+
+                        target_x = get_finger_coordinate(index_finger_tip.x, image.shape[1])
+                        target_y = get_finger_coordinate(index_finger_tip.y, image.shape[0])
+
+                        target_x = target_x / image.shape[1] * screen_width
+                        target_y = (image.shape[0] - target_y) / image.shape[0] * screen_height
+
+                        current_x, current_y = pyautogui.position()
+
+                        move_x = target_x - current_x
+                        move_y = target_y - current_y
+
+                        pyautogui.move(move_x, move_y)
+
+                    else:
+
                         if first_frame_for_click:
-                            prev_coordinate_click = get_finger_coordinate(index_finger_tip.y, image.shape[0])
+                            prev_coordinate_click = get_finger_coordinate(thumb_tip.x, image.shape[1])
                             first_frame_for_click = False
 
-                        next_coordinate_click = get_finger_coordinate(index_finger_tip.y, image.shape[0])
+                        next_coordinate_click = get_finger_coordinate(thumb_tip.x, image.shape[1])
                         if next_frame - prev_frame > 250000000:
-                            if next_coordinate_click - prev_coordinate_click > 30:
+                            if next_coordinate_click - prev_coordinate_click > 20:
                                 pyautogui.leftClick()
                             prev_coordinate_click = next_coordinate_click
                             prev_frame = next_frame
-
-                elif compare_group_of_coordinates([middle_finger_tip.y, middle_finger_MCP.y,
-                                                     ring_finger_tip.y, ring_finger_MCP.y,
-                                                     pinky_tip.y, pinky_MCP.y], image.shape[0]):
-
-                    target_x = get_finger_coordinate(index_finger_tip.x, image.shape[1])
-                    target_y = get_finger_coordinate(index_finger_tip.y, image.shape[0])
-
-                    target_x = target_x / image.shape[1] * screen_width
-                    target_y = (image.shape[0] - target_y) / image.shape[0] * screen_height
-
-                    current_x, current_y = pyautogui.position()
-
-                    move_x = target_x - current_x
-                    move_y = target_y - current_y
-
-                    pyautogui.move(move_x, move_y)
-
-                else:
-                    if first_frame_for_tab:
-                        prev_coordinate_tab = get_finger_coordinate(index_finger_tip.y, image.shape[0])
-                        first_frame_for_tab = False
-
-                    next_coordinate_tab = get_finger_coordinate(thumb_tip.x, image.shape[1])
-
-                    if next_frame - prev_frame > 250000000:
-                        if next_coordinate_tab - prev_coordinate_tab > 50:
-                            pyautogui.hotkey('ctrl', 'tab')
-                        prev_coordinate_tab = next_coordinate_tab
-                        prev_frame = next_frame
-
 
             mp_drawing.draw_landmarks(
                 image,
