@@ -6,7 +6,7 @@ Assuming that you have pip installed, type this in a terminal:
 ```sudo pip install tensorflow``` (with regard to creating neural networks [“NN”] models),  
 ```sudo pip install opencv-python``` (with regard of working with camera video),  
 ```sudo pip install mediapipe``` (with regard to work with created detection models (hand landmark detection)),  
-and ```sudo pip install pyautogui``` (with regard to work with system elements (mouse, keyboard etc.)),  
+and ```sudo pip install pyautogui``` (with regard to work with system elements (mouse, keyboard etc.)) 
 
 
 #### Overview:

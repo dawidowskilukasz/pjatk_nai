@@ -2,20 +2,32 @@ import ctypes
 
 
 def get_finger_coordinate(finger, image_shape):
+    """
+    Calculate the finger coordinate based on the image shape.
+    """
     return image_shape - (finger * image_shape)
 
 
 def convert_finger_coordinates_to_screen(finger, image):
+    """
+    Convert finger coordinates to screen coordinates.
+    """
     x = get_finger_coordinate(finger.x, image[1]) / image[1] * ctypes.windll.user32.GetSystemMetrics(0)
     y = (image[0] - get_finger_coordinate(finger.y, image[0])) / image[0] * ctypes.windll.user32.GetSystemMetrics(1)
     return x, y
 
 
 def subtract_fingers(finger_a, finger_b, image_shape):
+    """
+    Subtract the coordinates of two fingers.
+    """
     return get_finger_coordinate(finger_a, image_shape) - get_finger_coordinate(finger_b, image_shape)
 
 
 def compare_fingers(finger_a, finger_b, image_shape, threshold=0, absolute=False):
+    """
+    Compare the coordinates of two fingers.
+    """
     if absolute:
         return abs(subtract_fingers(finger_a, finger_b, image_shape)) < threshold
     else:
@@ -23,6 +35,9 @@ def compare_fingers(finger_a, finger_b, image_shape, threshold=0, absolute=False
 
 
 def compare_group_of_fingers(fingers, image_shape, axis, threshold=0):
+    """
+    Compare a group of fingers along a specific axis.
+    """
     for finger in fingers.fingers:
         if not (compare_fingers(finger["tip"].x if axis == "x" else finger["tip"].y,
                                 finger["dip"].x if axis == "x" else finger["dip"].y, image_shape, threshold)):
@@ -31,6 +46,9 @@ def compare_group_of_fingers(fingers, image_shape, axis, threshold=0):
 
 
 class Fingers:
+    """
+    Represents a hand with its fingers and landmarks.
+    """
     def __init__(self, hand_landmarks, mp_hands):
         self.hand_landmark = hand_landmarks.landmark
         self.mp_hand_landmark = mp_hands.HandLandmark
@@ -73,20 +91,35 @@ class Fingers:
         }
 
     def get_landmark(self, landmark):
+        """
+        Get the landmark coordinate.
+        """
         return self.hand_landmark[self.mp_hand_landmark[landmark]]
 
 
 class FingersController:
+    """
+    Controls the fingers and their coordinates.
+    """
     def __init__(self, finger, image_shape):
         self.image_shape = image_shape
         self.prev_coordinate = get_finger_coordinate(finger, self.image_shape)
         self.next_coordinate = None
 
     def set_next_coordinate(self, finger):
+        """
+        Set the next finger coordinate.
+        """
         self.next_coordinate = get_finger_coordinate(finger, self.image_shape)
 
     def set_prev_coordinates(self):
+        """
+        Set the previous finger coordinate.
+        """
         self.prev_coordinate = self.next_coordinate
 
     def are_coordinates_changed(self, threshold):
+        """
+        Check if the finger coordinates have changed.
+        """
         return self.next_coordinate - self.prev_coordinate > threshold
