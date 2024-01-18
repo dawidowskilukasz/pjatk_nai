@@ -7,8 +7,8 @@ import FingersController as fc
 import Actions
 
 MOVE_SCROLL_THRESHOLD = 60
-TAB_CHANGE_THRESHOLD = 40
-CLICK_THRESHOLD = 20
+TAB_CHANGE_THRESHOLD = 60
+CLICK_THRESHOLD = 30
 
 frame_controller = FrameController.FrameController()
 
@@ -58,10 +58,10 @@ with mp_hands.Hands(
                     else:
 
                         if frame_controller.is_first_frame_for_tab():
-                            fingers_controller_tab = fc.FingersController(fingers.thumb['tip'].x, image.shape[1])
+                            fingers_controller_tab = fc.FingersController(fingers.thumb['tip'].y, image.shape[0])
                             frame_controller.set_first_frame_for_tab()
 
-                        fingers_controller_tab.set_next_coordinate(fingers.thumb['tip'].x)
+                        fingers_controller_tab.set_next_coordinate(fingers.thumb['tip'].y)
 
                         if frame_controller.is_interval_elapsed():
 
