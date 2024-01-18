@@ -1,3 +1,23 @@
+"""
+Mouse Controller (for browser but not only)
+
+Installation:
+Assuming that you have pip installed, type this in a terminal:
+sudo pip install tensorflow (with regard to creating neural networks [“NN”] models),
+sudo pip install opencv-python (with regard of working with camera video),
+sudo pip install mediapipe (with regard to work with created detection models (hand landmark detection)),
+and sudo pip install pyautogui (with regard to work with system elements (mouse, keyboard etc.))
+
+Overview:
+A program using hand landmark detection in order to move in cursor and do basic tasks.
+
+It was made with a though about controlling the browser so there are specific gestures to work your way in browsers
+control you can find those gestures in Screens section or on provided sample videos
+
+Authors:
+By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45).
+"""
+
 import cv2
 import mediapipe as mp
 import pyautogui
@@ -41,8 +61,6 @@ with mp_hands.Hands(
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
-                # TO DO
-                # 1. Save last frame to calculate position of finger and base cursor movement on it
 
                 fingers = fc.Fingers(hand_landmarks, mp_hands)
 
