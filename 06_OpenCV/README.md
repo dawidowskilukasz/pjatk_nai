@@ -30,16 +30,16 @@ https://pyautogui.readthedocs.io/en/latest/ (PyAutoGUI documentation)
 
 #### Screens:
 
-Gesture for scrolling up (Scroll UP):
+Gesture for scrolling up (Scroll UP):  
 ![Scroll Up Gesture](ScrollUp.png)  
-Gesture for scrolling down (Scroll DOWN):
+Gesture for scrolling down (Scroll DOWN):  
 ![Scroll Down Gesture](ScrollDown.png)  
-Gesture to change to next Browser Tab (Ctrl + Tab):
-![Next Browser Tab Gesture](NextBrowserTab_1.png)![Next Browser Tab Gesture](NextBrowserTab_2.png)
-Gesture for moving cursor:
+Gesture to change to next Browser Tab (Ctrl + Tab):  
+![Next Browser Tab Gesture](NextBrowserTab_1.png)![Next Browser Tab Gesture](NextBrowserTab_2.png)  
+Gesture for moving cursor:  
 ![Point Cursor Gesture](PointCursor.png)  
-Gesture for left mouse button click (LMB):
-![Click Left Mouse Button Gesture](LMBClick_1.png)![Click Left Mouse Button Gesture](LMBClick_2.png)   
+Gesture for left mouse button click (LMB):  
+![Click Left Mouse Button Gesture](LMBClick_1.png)![Click Left Mouse Button Gesture](LMBClick_2.png)  
 Scrolling and changing tabs:  
 https://youtu.be/TPRT-t14pi0  
 Moving cursor and clicking:  
