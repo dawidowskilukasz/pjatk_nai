@@ -41,6 +41,6 @@ Gesture for moving cursor:
 Gesture for left mouse button click (LMB):  
 ![Click Left Mouse Button Gesture](LMBClick_1.png)![Click Left Mouse Button Gesture](LMBClick_2.png)  
 Scrolling and changing tabs:  
-https://youtu.be/TPRT-t14pi0  
+[![Scrolling and changing tabs](https://img.youtube.com/vi/TPRT-t14pi0/hqdefault.jpg)](https://youtu.be/TPRT-t14pi0)  
 Moving cursor and clicking:  
-https://youtu.be/jLubnVmyucY
+[![Moving cursor and clicking](https://img.youtube.com/vi/jLubnVmyucY/hqdefault.jpg)](https://youtu.be/jLubnVmyucY)
