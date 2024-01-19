@@ -3,16 +3,15 @@ Mouse Controller (for browser but not only)
 
 Installation:
 Assuming that you have pip installed, type this in a terminal:
-sudo pip install tensorflow (with regard to creating neural networks [“NN”] models),
-sudo pip install opencv-python (with regard of working with camera video),
-sudo pip install mediapipe (with regard to work with created detection models (hand landmark detection)),
-and sudo pip install pyautogui (with regard to work with system elements (mouse, keyboard etc.))
+– sudo pip install tensorflow (with regard to creating neural networks [“NN”] models),
+– sudo pip install opencv-python (with regard of working with camera video),
+– sudo pip install mediapipe (with regard to work with created detection models (hand landmark detection)),
+– sudo pip install pyautogui (with regard to work with system elements (mouse, keyboard etc.))
 
 Overview:
-A program using hand landmark detection in order to move in cursor and do basic tasks.
-
-It was made with a though about controlling the browser so there are specific gestures to work your way in browsers
-control you can find those gestures in Screens section or on provided sample videos
+A program using hand landmark detection library to move a cursor on a screen and do basic tasks. It was made with a
+though about controlling the browser, so specific gestures were designed to use the browser (scrolling up and down,
+changing tabs, moving the cursor and “left-clicking”).
 
 Authors:
 By Maciej Zagórski (s23575) and Łukasz Dawidowski (s22621), group 72c (10:15-11:45).
