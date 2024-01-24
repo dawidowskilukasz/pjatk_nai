@@ -1,15 +1,15 @@
 import gymnasium as gym
 
-from stable_baselines3 import PPO
+from stable_baselines3 import DQN
 from stable_baselines3.common.evaluation import evaluate_policy
 
 # Create environment
 env = gym.make("ALE/Pacman-v5", render_mode="rgb_array")
 
 ## # Instantiate the agent
-## model = PPO("MlpPolicy", env, verbose=1)
+## model = DQN("MlpPolicy", env, verbose=1, buffer_size=int(3e4))
 ## # Train the agent and display a progress bar
-## model.learn(total_timesteps=int(2e5), progress_bar=True)
+## model.learn(total_timesteps=int(1e6))
 ## # Save the agent
 ## model.save("dqn_pacman_1m")
 ## del model  # delete trained model to demonstrate loading
@@ -19,7 +19,7 @@ env = gym.make("ALE/Pacman-v5", render_mode="human")
 # NOTE: if you have loading issue, you can pass `print_system_info=True`
 # to compare the system on which the model was trained vs the current one
 # model = DQN.load("dqn_lunar", env=env, print_system_info=True)
-model = PPO.load("dqn_pacman_1m", env=env)
+model = DQN.load("dqn_pacman_1m", env=env)
 
 # Evaluate the agent
 # NOTE: If you use wrappers with your environment that modify rewards,
