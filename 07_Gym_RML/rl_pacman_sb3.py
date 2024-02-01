@@ -31,7 +31,7 @@ from stable_baselines3.common.vec_env import VecFrameStack
 
 GAME = "ALE/Pacman-v5"
 MODEL_TYPE = "A2C"  # Chose model type: PPO, DQN or A2C
-TIMESTEPS = int(500_000)  # Adjust model learning time
+TIMESTEPS = int(100_000)  # Adjust model learning time
 MODEL_NAME = MODEL_TYPE + "_pacman_" + str(TIMESTEPS)
 
 

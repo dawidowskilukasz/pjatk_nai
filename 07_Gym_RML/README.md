@@ -35,8 +35,8 @@ https://gymnasium.farama.org/ (Gymnasium documentation)
 Learning process:  
 ![Learning process](LearningProcess.png)  
 A2C agent:  
-[![A2C agent screenshot](https://img.youtube.com/vi/TPRT-t14pi0/hqdefault.jpg)](https://youtu.be/TPRT-t14pi0)  
+[![A2C agent screenshot](https://img.youtube.com/vi/FeNNz-DpeMw/hqdefault.jpg)](https://youtu.be/FeNNz-DpeMw)  
 DQN agent:
-[![DQN agent screenshot](https://img.youtube.com/vi/jLubnVmyucY/hqdefault.jpg)](https://youtu.be/jLubnVmyucY)
+[![DQN agent screenshot](https://img.youtube.com/vi/_LJ_UMJsfpA/hqdefault.jpg)](https://youtu.be/_LJ_UMJsfpA)
 PPO agent:
-[![PPO agent screenshot](https://img.youtube.com/vi/jLubnVmyucY/hqdefault.jpg)](https://youtu.be/jLubnVmyucY)
+[![PPO agent screenshot](https://img.youtube.com/vi/uZ8pHCQOyCs/hqdefault.jpg)](https://youtu.be/uZ8pHCQOyCs)
