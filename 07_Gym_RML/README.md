@@ -34,6 +34,7 @@ https://gymnasium.farama.org/ (Gymnasium documentation)
 
 Learning process:  
 ![Learning process](LearningProcess.png)  
+![Learning process](LearningProcess_2.png)  
 A2C agent:  
 [![A2C agent screenshot](https://img.youtube.com/vi/FeNNz-DpeMw/hqdefault.jpg)](https://youtu.be/FeNNz-DpeMw)  
 DQN agent:  
